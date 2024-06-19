@@ -1,3 +1,5 @@
+using CarAuction.MiddleWare;
+
 namespace CarAuction
 {
     public class Program
@@ -7,8 +9,15 @@ namespace CarAuction
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
-
-            builder.Services.AddControllers();
+            builder.AddDatabaseContext();
+            builder.ConfigureJwtOptions();
+            builder.AddIdentity();
+            builder.AddAuthentication();
+            builder.AddHttpContextAccessor();
+            builder.AddControllers();
+            builder.AddEndpointsApiExplorer();
+            builder.AddSwagger();
+            builder.AddCors();
 
             var app = builder.Build();
 
@@ -19,12 +28,11 @@ namespace CarAuction
             }
 
             app.UseHttpsRedirection();
-
+            app.UseCors(builder.Configuration.GetValue<string>("Cors:AllowOrigin")!);
+            app.UseAuthentication();
             app.UseAuthorization();
 
-
             app.MapControllers();
-
             app.Run();
         }
     }
