@@ -7,7 +7,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarAuction", "CarAuction\Ca
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarAuctionInfrastructure", "CarAuctionInfrastructure\CarAuctionInfrastructure.csproj", "{B65A1C36-4CDE-4F30-8772-797978F4BB54}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarAuctionEntities", "CarAuctionEntities\CarAuctionEntities.csproj", "{14737CFD-737F-44A3-B078-5CE19583B277}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarAuctionDomain", "CarAuctionEntities\CarAuctionDomain.csproj", "{14737CFD-737F-44A3-B078-5CE19583B277}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarAuctionApplication", "CarAuctionApplication\CarAuctionApplication.csproj", "{D851AF8F-5768-47D5-A7A9-ADC322033451}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{14737CFD-737F-44A3-B078-5CE19583B277}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{14737CFD-737F-44A3-B078-5CE19583B277}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{14737CFD-737F-44A3-B078-5CE19583B277}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D851AF8F-5768-47D5-A7A9-ADC322033451}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D851AF8F-5768-47D5-A7A9-ADC322033451}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D851AF8F-5768-47D5-A7A9-ADC322033451}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D851AF8F-5768-47D5-A7A9-ADC322033451}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
