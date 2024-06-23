@@ -1,4 +1,8 @@
 ﻿using CarAuctionEntities.Constants.Enums;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
+using CarAuctionDomain.Entities;
+using CarAuctionDomain.Constants.Enums;
 
 namespace CarAuctionEntities.Entities
 {
@@ -6,7 +10,7 @@ namespace CarAuctionEntities.Entities
     {
         public string Make { get; set; } = null!;
         public string Model { get; set; } = null!;
-        public string VinCode { get; set; } = null!;
+        public string? VinCode { get; set; }
         public ushort Year { get; set; }
         public string Color { get; set; } = null!;
         public string Odometer { get; set; } = null!;
@@ -15,8 +19,14 @@ namespace CarAuctionEntities.Entities
         public Transmission Transmission { get; set; }
         public Drive Drive { get; set; }
         public FuelType FuelType { get; set; }
-        //false = left
-        public bool Wheel { get; set; }
-        public string ImageUrl { get; set; } = null!;
+        public Wheel Wheel { get; set; }
+        public string? Notes { get; set; }
+
+        public Guid AuctionId { get; set; }
+        public Auction Auction { get; set; } = null!;
+
+        public virtual ICollection<AuctionItemImage>? Images { get; set; }
+
+        public AuctionItemAdditionalProperties? AdditionalProperties { get; set; }
     }
 }

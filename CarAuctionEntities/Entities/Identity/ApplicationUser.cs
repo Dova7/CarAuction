@@ -8,6 +8,7 @@ namespace CarAuctionEntities.Entities.Identity
         public string FirstName { get; set; } = null!;
         public string LastName { get; set; } = null!;
 
+        public ICollection<Auction>? Winnings { get; set; }
         public ICollection<Auction>? Auctions { get; set; }
     }
 }
