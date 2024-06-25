@@ -210,6 +210,7 @@ namespace CarAuctionInfrastructure.Migrations
                     FuelType = table.Column<int>(type: "int", nullable: false),
                     Wheel = table.Column<int>(type: "int", nullable: false),
                     Notes = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: true),
+                    MainImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     AuctionId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
@@ -275,12 +276,12 @@ namespace CarAuctionInfrastructure.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "DisplayName", "Email", "EmailConfirmed", "FirstName", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { "1365FCBA-5EBF-45B9-B67C-11DC33B91B12", 0, "88c15038-268c-4498-a470-185140358c7e", "MAINADMIN", "MAINADMIN@gmail.com", true, "MAINADMIN", "MAINADMIN", true, null, "MAINADMIN@GMAIL.COM", "MAINADMIN", "AQAAAAIAAYagAAAAECzGBvzKrEQ4lD/wd6wFYxrwlU17sM+BVvO0QTKN/fxtUEfs22/JpCdRKsqIxCSCMw==", "555337681", false, "82ed356a-c72c-4a25-aa51-39528ddf9880", false, "MAINADMIN" },
-                    { "1CF16252-E7F5-45DF-941A-88B7A592F9C7", 0, "936466af-73ff-4f0b-839d-d1039fe4855a", "Gogi", "gogi@gmail.com", false, "Gogi", "Gogishvili", true, null, "GOGI@GMAIL.COM", "GOGIGOGI", "AQAAAAIAAYagAAAAEFPyAh43biLnlJ+mJgsuzUsAp+saI3IHmbgubGxe3tL5DeFByFX9Nudl5gts53N0PA==", "551252560", false, "b2fb57c3-cfe9-4e51-83af-2bcf6ce1bdd3", false, "gogigogi" },
-                    { "44DC07F7-DD89-435E-8E67-AB46C799F3F2", 0, "670ef82d-5d23-44fe-b877-80078ac9bca6", "Giga", "giga@gmail.com", false, "Giga", "Gigauri", true, null, "GIGA@GMAIL.COM", "GIGAGIGA", "AQAAAAIAAYagAAAAEBC9hYaDchJ0wMfMMUgRsr9yjrzMHvyLCt9bQL1/BP0si/QnYeGNjyA6gmqi1eY0+A==", "599391269", false, "338aaa2e-8b22-49a7-b669-7b309433ac2a", false, "gigagiga" },
-                    { "53701346-B101-491E-8D0E-9FBD75B388AE", 0, "2d7a9f43-a260-471e-a764-a7fd07f0d0c1", "Admin", "Admin@gmail.com", true, "Admin", "Admin", true, null, "ADMIN@GMAIL.COM", "ADMIN", "AQAAAAIAAYagAAAAEHc/G71l5HHVlmO1hLYH8gdP6M7XQ+cmt1L7np9id5WKYkcrMBYwUT5Uvb1MK7D1UA==", "525531620", false, "a4806ae1-cf56-41f4-bf12-15a9be12db84", false, "Admin" },
-                    { "87073272-5331-449A-B99A-32F71D0DD7DC", 0, "d194e38f-fb38-4219-a71f-1b451bb9d7ef", "Beqa", "beqa@gmail.com", false, "Beqa", "Beqauri", true, null, "BEQA@GMAIL.COM", "BEQABEQA", "AQAAAAIAAYagAAAAEDXu7Up75gtwwdH+RY/+XihxhKO6kanQXgnwQbgekZQoRgnD8ILJvkyb3XwXSJOxBA==", "521112550", false, "30dc13fb-ef6d-43ca-8001-992a3dfef04e", false, "beqabeqa" },
-                    { "D29F8763-846A-43B6-B6AE-3142395D355A", 0, "34275d9f-dd9f-4276-ab00-3511acc5b131", "Gio", "gio@gmail.com", false, "Giorgi", "Giorgadze", true, null, "GIO@GMAIL.COM", "GIOGIO", "AQAAAAIAAYagAAAAEP0LpAM7dl3MOynsJwsdjPoja7W55ZN3pINaSkgG6mLkvKUH02j6rra6sLFeqe8eTg==", "507731029", false, "d3404569-b520-455d-9b4b-c126acda5b2e", false, "giogio" }
+                    { "1365FCBA-5EBF-45B9-B67C-11DC33B91B12", 0, "3ef7673e-8571-4336-8c32-b2df16c1ab17", "MAINADMIN", "MAINADMIN@gmail.com", true, "MAINADMIN", "MAINADMIN", true, null, "MAINADMIN@GMAIL.COM", "MAINADMIN", "AQAAAAIAAYagAAAAEEA3ThslhyKMJgez54wmVrwL2zm3DXc/gaf+9zVORlG2JX9iJk12bQGm+av7mF90FQ==", "555337681", false, "c69a553a-7b64-4c5e-9261-344559f353d8", false, "MAINADMIN" },
+                    { "1CF16252-E7F5-45DF-941A-88B7A592F9C7", 0, "f11de9ab-aff8-45c5-9ff9-0cfe65bc8a0b", "Gogi", "gogi@gmail.com", false, "Gogi", "Gogishvili", true, null, "GOGI@GMAIL.COM", "GOGIGOGI", "AQAAAAIAAYagAAAAEIWeblDZA7TwROtUBanIlJHmzdbQ+KROfa+EewqLQE9S1eDw1q6z1+dRO6fMY0HMTA==", "551252560", false, "6e431e10-2753-4983-8039-72333a9bbf0d", false, "gogigogi" },
+                    { "44DC07F7-DD89-435E-8E67-AB46C799F3F2", 0, "fa83b31c-6c62-42c4-8b7d-defaa7b33f90", "Giga", "giga@gmail.com", false, "Giga", "Gigauri", true, null, "GIGA@GMAIL.COM", "GIGAGIGA", "AQAAAAIAAYagAAAAEEcL2EdSmoHsh6+59npWo8j9aSMIayaC8y5ILPrZCgQqL3uLy3ebBWvQZapaV++1Tw==", "599391269", false, "ebad01a3-aac1-4d86-aff9-22cd9d9b03f9", false, "gigagiga" },
+                    { "53701346-B101-491E-8D0E-9FBD75B388AE", 0, "a223f3f7-cf24-46cf-a629-ee251b97c824", "Admin", "Admin@gmail.com", true, "Admin", "Admin", true, null, "ADMIN@GMAIL.COM", "ADMIN", "AQAAAAIAAYagAAAAELDDm1g/K1XlY8qN0lFifNA9fu6SKxyBSSeU6B2BakqiadqAil2K8v/GH6/p4R6oRQ==", "525531620", false, "79688907-d577-4b3b-af58-f7a01338fa06", false, "Admin" },
+                    { "87073272-5331-449A-B99A-32F71D0DD7DC", 0, "3d0e783b-4545-4ac4-9c9b-2b6c7f4d55a7", "Beqa", "beqa@gmail.com", false, "Beqa", "Beqauri", true, null, "BEQA@GMAIL.COM", "BEQABEQA", "AQAAAAIAAYagAAAAELKiGmB0TXhOduIPit3GZfpeZD4qf6bgRoh9IP4BAPOPmkiEagBq3h2UhVjScuQCqQ==", "521112550", false, "009eefb6-5f84-489a-bf0f-ee239dd9210a", false, "beqabeqa" },
+                    { "D29F8763-846A-43B6-B6AE-3142395D355A", 0, "706b11a3-d3cd-4c38-848a-d57bb2bf9cee", "Gio", "gio@gmail.com", false, "Giorgi", "Giorgadze", true, null, "GIO@GMAIL.COM", "GIOGIO", "AQAAAAIAAYagAAAAEDY9oq80inYoR2Fa3bm0qFaWnB1hiWMKLU2mt/T54RPkvDbSXHY4cfdOaWAo4lsiaA==", "507731029", false, "4bc73f88-830d-46cf-873b-89c2c799d14f", false, "giogio" }
                 });
 
             migrationBuilder.InsertData(
@@ -301,17 +302,17 @@ namespace CarAuctionInfrastructure.Migrations
                 columns: new[] { "Id", "AuctionEnd", "CreatedAt", "CurrentHighBid", "ReservePrice", "SellerId", "SoldAmount", "Status", "UpdatedAt", "WinnerId" },
                 values: new object[,]
                 {
-                    { new Guid("851b5cb4-99be-4e77-bfa6-8769d43c0f31"), new DateTime(2024, 6, 24, 22, 35, 11, 45, DateTimeKind.Local).AddTicks(7930), new DateTime(2024, 6, 8, 22, 35, 11, 45, DateTimeKind.Local).AddTicks(7923), 32500L, 30000L, "1CF16252-E7F5-45DF-941A-88B7A592F9C7", 32500L, 2, new DateTime(2024, 6, 23, 22, 35, 11, 45, DateTimeKind.Local).AddTicks(7924), "D29F8763-846A-43B6-B6AE-3142395D355A" },
-                    { new Guid("c21feb91-5cbb-4f8a-884a-0597444e7bb2"), new DateTime(2024, 7, 23, 22, 35, 11, 45, DateTimeKind.Local).AddTicks(7912), new DateTime(2024, 6, 23, 22, 35, 11, 45, DateTimeKind.Local).AddTicks(7897), 8000L, 9500L, "87073272-5331-449A-B99A-32F71D0DD7DC", null, 1, null, null }
+                    { new Guid("851b5cb4-99be-4e77-bfa6-8769d43c0f31"), new DateTime(2024, 6, 25, 19, 58, 36, 881, DateTimeKind.Local).AddTicks(7905), new DateTime(2024, 6, 9, 19, 58, 36, 881, DateTimeKind.Local).AddTicks(7901), 32500L, 30000L, "1CF16252-E7F5-45DF-941A-88B7A592F9C7", 32500L, 2, new DateTime(2024, 6, 24, 19, 58, 36, 881, DateTimeKind.Local).AddTicks(7901), "D29F8763-846A-43B6-B6AE-3142395D355A" },
+                    { new Guid("c21feb91-5cbb-4f8a-884a-0597444e7bb2"), new DateTime(2024, 7, 24, 19, 58, 36, 881, DateTimeKind.Local).AddTicks(7888), new DateTime(2024, 6, 24, 19, 58, 36, 881, DateTimeKind.Local).AddTicks(7875), 8000L, 9500L, "87073272-5331-449A-B99A-32F71D0DD7DC", null, 1, null, null }
                 });
 
             migrationBuilder.InsertData(
                 table: "AuctionItems",
-                columns: new[] { "Id", "AuctionId", "Color", "Cylinders", "Drive", "EngineType", "FuelType", "Make", "Model", "Notes", "Odometer", "Transmission", "VinCode", "Wheel", "Year" },
+                columns: new[] { "Id", "AuctionId", "Color", "Cylinders", "Drive", "EngineType", "FuelType", "MainImageUrl", "Make", "Model", "Notes", "Odometer", "Transmission", "VinCode", "Wheel", "Year" },
                 values: new object[,]
                 {
-                    { new Guid("050e9044-8bf3-4999-b2f6-cf5c5065bb96"), new Guid("c21feb91-5cbb-4f8a-884a-0597444e7bb2"), "White", (byte)4, 1, "1.8", 4, "Lexus", "CT200 F Sport", " ", "145600 k", 3, " ", 2, 2015 },
-                    { new Guid("22fee0f9-1fee-4d5e-ab00-322c5f9f7058"), new Guid("851b5cb4-99be-4e77-bfa6-8769d43c0f31"), "Purple", (byte)6, 2, "3.0", 1, "Toyota", "Supra", " ", "345980 k", 1, " ", 2, 1997 }
+                    { new Guid("050e9044-8bf3-4999-b2f6-cf5c5065bb96"), new Guid("c21feb91-5cbb-4f8a-884a-0597444e7bb2"), "White", (byte)4, 1, "1.8", 4, null, "Lexus", "CT200 F Sport", " ", "145600 k", 3, " ", 2, 2015 },
+                    { new Guid("22fee0f9-1fee-4d5e-ab00-322c5f9f7058"), new Guid("851b5cb4-99be-4e77-bfa6-8769d43c0f31"), "Purple", (byte)6, 2, "3.0", 1, null, "Toyota", "Supra", " ", "345980 k", 1, " ", 2, 1997 }
                 });
 
             migrationBuilder.CreateIndex(

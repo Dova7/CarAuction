@@ -1,10 +1,11 @@
-﻿using CarAuctionDomain.Constants.Enums;
-using CarAuctionDomain.Entities;
+﻿using CarAuctionApplication.Models.Main.Dtos.CarAuctionItemAdditionalProperties;
+using CarAuctionApplication.Models.Main.Dtos.CarAuctionItemImage;
+using CarAuctionDomain.Constants.Enums;
 using CarAuctionEntities.Constants.Enums;
 
-namespace CarAuctionEntities.Entities
+namespace CarAuctionApplication.Models.Main.Dtos.CarAuctionItem
 {
-    public class AuctionItem : BaseEntity
+    public class AuctioinItemForGettingDtoSingle
     {
         public string Make { get; set; } = null!;
         public string Model { get; set; } = null!;
@@ -21,11 +22,7 @@ namespace CarAuctionEntities.Entities
         public string? Notes { get; set; }
         public string? MainImageUrl { get; set; }
 
-        public Guid AuctionId { get; set; }
-        public Auction Auction { get; set; } = null!;
-
-        public virtual ICollection<AuctionItemImage>? Images { get; set; }
-
-        public AuctionItemAdditionalProperties? AdditionalProperties { get; set; }
+        public virtual ICollection<AuctionItemImageForGettingDtoSingle>? Images { get; set; }
+        public AuctionAddPropertiesForGettingDtoSingle? AdditionalProperties { get; set; }
     }
 }

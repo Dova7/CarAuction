@@ -1,6 +1,4 @@
 ﻿using CarAuctionEntities.Constants.Enums;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
 using CarAuctionEntities.Entities.Identity;
 
 namespace CarAuctionEntities.Entities

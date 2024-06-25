@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CarAuctionInfrastructure.Migrations
 {
     [DbContext(typeof(CarAuctionDbContext))]
-    [Migration("20240623183511_Initial")]
+    [Migration("20240624155837_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -111,8 +111,8 @@ namespace CarAuctionInfrastructure.Migrations
                         new
                         {
                             Id = new Guid("c21feb91-5cbb-4f8a-884a-0597444e7bb2"),
-                            AuctionEnd = new DateTime(2024, 7, 23, 22, 35, 11, 45, DateTimeKind.Local).AddTicks(7912),
-                            CreatedAt = new DateTime(2024, 6, 23, 22, 35, 11, 45, DateTimeKind.Local).AddTicks(7897),
+                            AuctionEnd = new DateTime(2024, 7, 24, 19, 58, 36, 881, DateTimeKind.Local).AddTicks(7888),
+                            CreatedAt = new DateTime(2024, 6, 24, 19, 58, 36, 881, DateTimeKind.Local).AddTicks(7875),
                             CurrentHighBid = 8000L,
                             ReservePrice = 9500L,
                             SellerId = "87073272-5331-449A-B99A-32F71D0DD7DC",
@@ -121,14 +121,14 @@ namespace CarAuctionInfrastructure.Migrations
                         new
                         {
                             Id = new Guid("851b5cb4-99be-4e77-bfa6-8769d43c0f31"),
-                            AuctionEnd = new DateTime(2024, 6, 24, 22, 35, 11, 45, DateTimeKind.Local).AddTicks(7930),
-                            CreatedAt = new DateTime(2024, 6, 8, 22, 35, 11, 45, DateTimeKind.Local).AddTicks(7923),
+                            AuctionEnd = new DateTime(2024, 6, 25, 19, 58, 36, 881, DateTimeKind.Local).AddTicks(7905),
+                            CreatedAt = new DateTime(2024, 6, 9, 19, 58, 36, 881, DateTimeKind.Local).AddTicks(7901),
                             CurrentHighBid = 32500L,
                             ReservePrice = 30000L,
                             SellerId = "1CF16252-E7F5-45DF-941A-88B7A592F9C7",
                             SoldAmount = 32500L,
                             Status = 2,
-                            UpdatedAt = new DateTime(2024, 6, 23, 22, 35, 11, 45, DateTimeKind.Local).AddTicks(7924),
+                            UpdatedAt = new DateTime(2024, 6, 24, 19, 58, 36, 881, DateTimeKind.Local).AddTicks(7901),
                             WinnerId = "D29F8763-846A-43B6-B6AE-3142395D355A"
                         });
                 });
@@ -158,6 +158,9 @@ namespace CarAuctionInfrastructure.Migrations
 
                     b.Property<int>("FuelType")
                         .HasColumnType("int");
+
+                    b.Property<string>("MainImageUrl")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Make")
                         .IsRequired()
@@ -320,7 +323,7 @@ namespace CarAuctionInfrastructure.Migrations
                         {
                             Id = "1365FCBA-5EBF-45B9-B67C-11DC33B91B12",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "88c15038-268c-4498-a470-185140358c7e",
+                            ConcurrencyStamp = "3ef7673e-8571-4336-8c32-b2df16c1ab17",
                             DisplayName = "MAINADMIN",
                             Email = "MAINADMIN@gmail.com",
                             EmailConfirmed = true,
@@ -329,10 +332,10 @@ namespace CarAuctionInfrastructure.Migrations
                             LockoutEnabled = true,
                             NormalizedEmail = "MAINADMIN@GMAIL.COM",
                             NormalizedUserName = "MAINADMIN",
-                            PasswordHash = "AQAAAAIAAYagAAAAECzGBvzKrEQ4lD/wd6wFYxrwlU17sM+BVvO0QTKN/fxtUEfs22/JpCdRKsqIxCSCMw==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEEA3ThslhyKMJgez54wmVrwL2zm3DXc/gaf+9zVORlG2JX9iJk12bQGm+av7mF90FQ==",
                             PhoneNumber = "555337681",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "82ed356a-c72c-4a25-aa51-39528ddf9880",
+                            SecurityStamp = "c69a553a-7b64-4c5e-9261-344559f353d8",
                             TwoFactorEnabled = false,
                             UserName = "MAINADMIN"
                         },
@@ -340,7 +343,7 @@ namespace CarAuctionInfrastructure.Migrations
                         {
                             Id = "53701346-B101-491E-8D0E-9FBD75B388AE",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "2d7a9f43-a260-471e-a764-a7fd07f0d0c1",
+                            ConcurrencyStamp = "a223f3f7-cf24-46cf-a629-ee251b97c824",
                             DisplayName = "Admin",
                             Email = "Admin@gmail.com",
                             EmailConfirmed = true,
@@ -349,10 +352,10 @@ namespace CarAuctionInfrastructure.Migrations
                             LockoutEnabled = true,
                             NormalizedEmail = "ADMIN@GMAIL.COM",
                             NormalizedUserName = "ADMIN",
-                            PasswordHash = "AQAAAAIAAYagAAAAEHc/G71l5HHVlmO1hLYH8gdP6M7XQ+cmt1L7np9id5WKYkcrMBYwUT5Uvb1MK7D1UA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAELDDm1g/K1XlY8qN0lFifNA9fu6SKxyBSSeU6B2BakqiadqAil2K8v/GH6/p4R6oRQ==",
                             PhoneNumber = "525531620",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "a4806ae1-cf56-41f4-bf12-15a9be12db84",
+                            SecurityStamp = "79688907-d577-4b3b-af58-f7a01338fa06",
                             TwoFactorEnabled = false,
                             UserName = "Admin"
                         },
@@ -360,7 +363,7 @@ namespace CarAuctionInfrastructure.Migrations
                         {
                             Id = "D29F8763-846A-43B6-B6AE-3142395D355A",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "34275d9f-dd9f-4276-ab00-3511acc5b131",
+                            ConcurrencyStamp = "706b11a3-d3cd-4c38-848a-d57bb2bf9cee",
                             DisplayName = "Gio",
                             Email = "gio@gmail.com",
                             EmailConfirmed = false,
@@ -369,10 +372,10 @@ namespace CarAuctionInfrastructure.Migrations
                             LockoutEnabled = true,
                             NormalizedEmail = "GIO@GMAIL.COM",
                             NormalizedUserName = "GIOGIO",
-                            PasswordHash = "AQAAAAIAAYagAAAAEP0LpAM7dl3MOynsJwsdjPoja7W55ZN3pINaSkgG6mLkvKUH02j6rra6sLFeqe8eTg==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEDY9oq80inYoR2Fa3bm0qFaWnB1hiWMKLU2mt/T54RPkvDbSXHY4cfdOaWAo4lsiaA==",
                             PhoneNumber = "507731029",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "d3404569-b520-455d-9b4b-c126acda5b2e",
+                            SecurityStamp = "4bc73f88-830d-46cf-873b-89c2c799d14f",
                             TwoFactorEnabled = false,
                             UserName = "giogio"
                         },
@@ -380,7 +383,7 @@ namespace CarAuctionInfrastructure.Migrations
                         {
                             Id = "87073272-5331-449A-B99A-32F71D0DD7DC",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "d194e38f-fb38-4219-a71f-1b451bb9d7ef",
+                            ConcurrencyStamp = "3d0e783b-4545-4ac4-9c9b-2b6c7f4d55a7",
                             DisplayName = "Beqa",
                             Email = "beqa@gmail.com",
                             EmailConfirmed = false,
@@ -389,10 +392,10 @@ namespace CarAuctionInfrastructure.Migrations
                             LockoutEnabled = true,
                             NormalizedEmail = "BEQA@GMAIL.COM",
                             NormalizedUserName = "BEQABEQA",
-                            PasswordHash = "AQAAAAIAAYagAAAAEDXu7Up75gtwwdH+RY/+XihxhKO6kanQXgnwQbgekZQoRgnD8ILJvkyb3XwXSJOxBA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAELKiGmB0TXhOduIPit3GZfpeZD4qf6bgRoh9IP4BAPOPmkiEagBq3h2UhVjScuQCqQ==",
                             PhoneNumber = "521112550",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "30dc13fb-ef6d-43ca-8001-992a3dfef04e",
+                            SecurityStamp = "009eefb6-5f84-489a-bf0f-ee239dd9210a",
                             TwoFactorEnabled = false,
                             UserName = "beqabeqa"
                         },
@@ -400,7 +403,7 @@ namespace CarAuctionInfrastructure.Migrations
                         {
                             Id = "44DC07F7-DD89-435E-8E67-AB46C799F3F2",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "670ef82d-5d23-44fe-b877-80078ac9bca6",
+                            ConcurrencyStamp = "fa83b31c-6c62-42c4-8b7d-defaa7b33f90",
                             DisplayName = "Giga",
                             Email = "giga@gmail.com",
                             EmailConfirmed = false,
@@ -409,10 +412,10 @@ namespace CarAuctionInfrastructure.Migrations
                             LockoutEnabled = true,
                             NormalizedEmail = "GIGA@GMAIL.COM",
                             NormalizedUserName = "GIGAGIGA",
-                            PasswordHash = "AQAAAAIAAYagAAAAEBC9hYaDchJ0wMfMMUgRsr9yjrzMHvyLCt9bQL1/BP0si/QnYeGNjyA6gmqi1eY0+A==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEEcL2EdSmoHsh6+59npWo8j9aSMIayaC8y5ILPrZCgQqL3uLy3ebBWvQZapaV++1Tw==",
                             PhoneNumber = "599391269",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "338aaa2e-8b22-49a7-b669-7b309433ac2a",
+                            SecurityStamp = "ebad01a3-aac1-4d86-aff9-22cd9d9b03f9",
                             TwoFactorEnabled = false,
                             UserName = "gigagiga"
                         },
@@ -420,7 +423,7 @@ namespace CarAuctionInfrastructure.Migrations
                         {
                             Id = "1CF16252-E7F5-45DF-941A-88B7A592F9C7",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "936466af-73ff-4f0b-839d-d1039fe4855a",
+                            ConcurrencyStamp = "f11de9ab-aff8-45c5-9ff9-0cfe65bc8a0b",
                             DisplayName = "Gogi",
                             Email = "gogi@gmail.com",
                             EmailConfirmed = false,
@@ -429,10 +432,10 @@ namespace CarAuctionInfrastructure.Migrations
                             LockoutEnabled = true,
                             NormalizedEmail = "GOGI@GMAIL.COM",
                             NormalizedUserName = "GOGIGOGI",
-                            PasswordHash = "AQAAAAIAAYagAAAAEFPyAh43biLnlJ+mJgsuzUsAp+saI3IHmbgubGxe3tL5DeFByFX9Nudl5gts53N0PA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEIWeblDZA7TwROtUBanIlJHmzdbQ+KROfa+EewqLQE9S1eDw1q6z1+dRO6fMY0HMTA==",
                             PhoneNumber = "551252560",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "b2fb57c3-cfe9-4e51-83af-2bcf6ce1bdd3",
+                            SecurityStamp = "6e431e10-2753-4983-8039-72333a9bbf0d",
                             TwoFactorEnabled = false,
                             UserName = "gogigogi"
                         });
