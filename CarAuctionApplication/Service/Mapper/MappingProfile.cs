@@ -10,7 +10,7 @@ namespace CarAuctionApplication.Service.Mapper
 {
     public class MappingProfile
     {
-        public static IMapper InitilizeAuction()
+        public IMapper InitilizeAuction()
         {
             MapperConfiguration configuration = new(c =>
             {

@@ -1,6 +1,12 @@
-﻿using CarAuctionApplication.Models.Identity;
+﻿using CarAuctionApplication.Contracts;
+using CarAuctionApplication.Contracts.IRepositories;
+using CarAuctionApplication.Contracts.IServices;
+using CarAuctionApplication.Models.Identity;
+using CarAuctionApplication.Service.Implementations;
 using CarAuctionEntities.Entities.Identity;
+using CarAuctionInfrastructure;
 using CarAuctionInfrastructure.Data;
+using CarAuctionInfrastructure.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -8,6 +14,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace CarAuction.MiddleWare
 {
@@ -106,6 +113,13 @@ namespace CarAuction.MiddleWare
                     policy.AllowAnyOrigin();
                 });
             });
+        }
+        public static void AddScopedServices(this WebApplicationBuilder builder)
+        {
+            builder.Services.AddScoped<CarAuctionApplication.Service.Mapper.MappingProfile>();
+            builder.Services.AddScoped<IJwtGenerator, JwtTokenGenerator>();
+            builder.Services.AddScoped<IAuctionRepository, AuctionRepository>();           
+            builder.Services.AddScoped<IAuctionService, AuctionService>();
         }
 
     }
