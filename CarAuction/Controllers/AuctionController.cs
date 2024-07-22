@@ -18,6 +18,7 @@ namespace CarAuction.Controllers
         {
              _auctionService = auctionService;
         }
+
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -28,6 +29,7 @@ namespace CarAuction.Controllers
 
             return result;
         }
+
         [HttpGet("{auctionId:guid}")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -39,6 +41,7 @@ namespace CarAuction.Controllers
 
             return result;
         }
+
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -48,11 +51,12 @@ namespace CarAuction.Controllers
 
             return Ok();
         }
+
         [HttpPut("{auctionId:guid}")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<IActionResult> UpdateTopicUser([FromRoute] Guid auctionId, [FromBody] AuctionForUpdatingDtoSeller auctionForUpdatingDtoSeller)
+        public async Task<IActionResult> UpdateAuction([FromRoute] Guid auctionId, [FromBody] AuctionForUpdatingDtoSeller auctionForUpdatingDtoSeller)
         {
             await _auctionService.UpdateAuctionAsyncSeller(auctionId, auctionForUpdatingDtoSeller);            
 
@@ -63,7 +67,7 @@ namespace CarAuction.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<IActionResult> DeleteTopic([FromRoute] Guid auctionId)
+        public async Task<IActionResult> DeleteAuction([FromRoute] Guid auctionId)
         {
             await _auctionService.DeleteAuctionAsync(auctionId);            
 
