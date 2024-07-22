@@ -1,4 +1,8 @@
 ﻿using AutoMapper;
+using CarAuctionApplication.Models.Main.Dtos.Auction;
+using CarAuctionApplication.Models.Main.Dtos.AuctionItem;
+using CarAuctionApplication.Models.Main.Dtos.AuctionItemAdditionalProperties;
+using CarAuctionApplication.Models.Main.Dtos.AuctionItemImage;
 using CarAuctionApplication.Models.Main.Dtos.CarAuction;
 using CarAuctionApplication.Models.Main.Dtos.CarAuctionItem;
 using CarAuctionApplication.Models.Main.Dtos.CarAuctionItemAdditionalProperties;
@@ -34,6 +38,31 @@ namespace CarAuctionApplication.Service.Mapper
 
                 c.CreateMap<Auction, AuctionForGettingDtoSingle>()
                 .ForMember(d => d.AuctionItem, o => o.MapFrom(s => s.AuctionItem))
+                .ReverseMap();
+
+
+                c.CreateMap<Auction, AuctionForCreatingDto>()
+                .ReverseMap();
+
+                c.CreateMap<AuctionItem, AuctionItemForCreatingDto>()
+                .ReverseMap();
+
+                c.CreateMap<AuctionItemImage, AuctionItemImageForCreatingDto>()
+                .ReverseMap();
+
+                c.CreateMap<AuctionItemAdditionalProperties, AuctionItemPropertiesForCreatingDto>()
+                .ReverseMap();
+
+                c.CreateMap<Auction, AuctionForUpdatingDtoSeller>()
+                .ReverseMap();
+
+                c.CreateMap<AuctionItem, AuctionItemForUpdatingDto>()
+                .ReverseMap();
+
+                c.CreateMap<AuctionItemImage, AuctionItemImageForUpdatingDto>()
+                .ReverseMap();
+
+                c.CreateMap<AuctionItemAdditionalProperties, AuctionItemPropertiesForUpdatingDto>()
                 .ReverseMap();
             });
             return configuration.CreateMapper();
