@@ -97,18 +97,18 @@ namespace CarAuctionApplication.Service.Implementations
             {
                 throw new UnauthorizedAccessException("Must be logged in to update Topic");
             }*/
-            var auctionFromDb = await _AuctionRepository.GetAsync(x => x.Id == auctionId);
+            var auctionFromDb = await _AuctionRepository.GetAsync(x => x.Id == auctionId, includePropeties: "AuctionItem,AuctionItem.Images,AuctionItem.AdditionalProperties");
             if (auctionFromDb is null)
             {
                 throw new Exception("Auction not Found");
-            }            
+            }
             /*if (auctionFromDb.UserId != authenticatedId)
             {
                 throw new UnauthorizedAccessException("Can't update another users topic");
             }*/
-            var updatedAuction = _mapper.Map<Auction>(auctionForUpdatingDtoSeller);
-            updatedAuction.Id = auctionId;
-            await _AuctionRepository.Update(updatedAuction);
+            _mapper.Map(auctionForUpdatingDtoSeller, auctionFromDb);
+            
+            await _AuctionRepository.Update(auctionFromDb);
             await _AuctionRepository.Save();
         }
 
