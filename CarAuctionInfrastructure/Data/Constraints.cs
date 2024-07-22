@@ -17,9 +17,23 @@ namespace CarAuctionInfrastructure.Data
                 //e.Property(x => x.AuctionItem).IsRequired();
                 e.Property(x => x.SellerId).IsRequired();
             });
-            modelBuilder.Entity<Auction>().HasOne(x => x.AuctionItem).WithOne(x => x.Auction).HasForeignKey<AuctionItem>(x=> x.AuctionId).OnDelete(DeleteBehavior.Cascade);
-            modelBuilder.Entity<Auction>().HasOne(x => x.Seller).WithMany(x => x.Auctions).HasForeignKey(x => x.SellerId).OnDelete(DeleteBehavior.NoAction);
-            modelBuilder.Entity<Auction>().HasOne(x => x.Winner).WithMany(x => x.Winnings).HasForeignKey(x => x.WinnerId).OnDelete(DeleteBehavior.NoAction);
+            modelBuilder.Entity<Auction>()
+                .HasOne(x => x.AuctionItem)
+                .WithOne(x => x.Auction)
+                .HasForeignKey<AuctionItem>(x=> x.AuctionId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Auction>()
+                .HasOne(x => x.Seller)
+                .WithMany(x => x.Auctions)
+                .HasForeignKey(x => x.SellerId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<Auction>()
+                .HasOne(x => x.Winner)
+                .WithMany(x => x.Winnings)
+                .HasForeignKey(x => x.WinnerId)
+                .OnDelete(DeleteBehavior.NoAction);
         }
         public static void AuctionItemConstraints(this ModelBuilder modelBuilder)
         {
@@ -40,10 +54,26 @@ namespace CarAuctionInfrastructure.Data
                 e.Property(x => x.Wheel).IsRequired();
                 e.Property(x => x.Notes).HasMaxLength(1000);
             });
-            modelBuilder.Entity<AuctionItem>().ToTable(t => t.HasCheckConstraint("CK_AuctionItem_Year_NotFuture", "[Year] <= YEAR(GETDATE()) + 1"));
-            modelBuilder.Entity<AuctionItem>().HasOne(x => x.Auction).WithOne(x => x.AuctionItem).HasForeignKey<AuctionItem>(x => x.AuctionId).OnDelete(DeleteBehavior.Cascade);
-            modelBuilder.Entity<AuctionItem>().HasMany(x => x.Images).WithOne(x => x.AuctionItem).HasForeignKey(x => x.AuctionItemId).OnDelete(DeleteBehavior.Cascade);
-            modelBuilder.Entity<AuctionItem>().HasOne(x => x.AdditionalProperties).WithOne(x => x.AuctionItem).HasForeignKey<AuctionItemAdditionalProperties>(x => x.AuctionItemId).OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<AuctionItem>()
+                .ToTable(t => t.HasCheckConstraint("CK_AuctionItem_Year_NotFuture", "[Year] <= YEAR(GETDATE()) + 1"));
+
+            modelBuilder.Entity<AuctionItem>()
+                .HasOne(x => x.Auction)
+                .WithOne(x => x.AuctionItem)
+                .HasForeignKey<AuctionItem>(x => x.AuctionId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<AuctionItem>()
+                .HasMany(x => x.Images)
+                .WithOne(x => x.AuctionItem)
+                .HasForeignKey(x => x.AuctionItemId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<AuctionItem>()
+                .HasOne(x => x.AdditionalProperties)
+                .WithOne(x => x.AuctionItem)
+                .HasForeignKey<AuctionItemAdditionalProperties>(x => x.AuctionItemId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
         public static void AuctionItemImageConstraints(this ModelBuilder modelBuilder)
         {
@@ -53,7 +83,11 @@ namespace CarAuctionInfrastructure.Data
                 e.Property(x => x.Id).IsRequired().ValueGeneratedOnAdd();
                 e.Property(x => x.ImageUrl).HasMaxLength(2048);
             });
-            modelBuilder.Entity<AuctionItemImage>().HasOne(x => x.AuctionItem).WithMany(x => x.Images).HasForeignKey(x => x.AuctionItemId).OnDelete(DeleteBehavior.NoAction);
+            modelBuilder.Entity<AuctionItemImage>()
+                .HasOne(x => x.AuctionItem)
+                .WithMany(x => x.Images)
+                .HasForeignKey(x => x.AuctionItemId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
         public static void AuctionItemAdditionalPropertiesConstraints(this ModelBuilder modelBuilder)
         {
@@ -62,7 +96,11 @@ namespace CarAuctionInfrastructure.Data
                 e.HasKey(x => x.Id);
                 e.Property(x => x.Id).IsRequired().ValueGeneratedOnAdd();
             });
-            modelBuilder.Entity<AuctionItemAdditionalProperties>().HasOne(x => x.AuctionItem).WithOne(x => x.AdditionalProperties).HasForeignKey<AuctionItemAdditionalProperties>(x => x.AuctionItemId).OnDelete(DeleteBehavior.NoAction);
+            modelBuilder.Entity<AuctionItemAdditionalProperties>()
+                .HasOne(x => x.AuctionItem)
+                .WithOne(x => x.AdditionalProperties)
+                .HasForeignKey<AuctionItemAdditionalProperties>(x => x.AuctionItemId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
         public static void ApplicationUserConstraints(this ModelBuilder modelBuilder)
         {

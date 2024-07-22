@@ -65,7 +65,7 @@ namespace CarAuctionApplication.Service.Implementations
             {
                 throw new ArgumentException("Invalid argument passed");
             }
-            var raw = await _AuctionRepository.GetAsync(x => x.Id == auctionId, includePropeties: "Comments,ApplicationUser");
+            var raw = await _AuctionRepository.GetAsync(x => x.Id == auctionId, includePropeties: "AuctionItem,AuctionItem.Images,AuctionItem.AdditionalProperties");
             if (raw == null)
             {
                 throw new Exception("Auction not Found");
