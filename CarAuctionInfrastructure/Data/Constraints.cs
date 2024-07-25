@@ -1,4 +1,5 @@
 ﻿using CarAuctionDomain.Entities;
+using CarAuctionDomain.Entities.Bidding;
 using CarAuctionEntities.Entities;
 using CarAuctionEntities.Entities.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -111,6 +112,16 @@ namespace CarAuctionInfrastructure.Data
             });
             modelBuilder.Entity<ApplicationUser>().HasMany(x => x.Auctions).WithOne(x => x.Seller).OnDelete(DeleteBehavior.Cascade);
             modelBuilder.Entity<ApplicationUser>().HasMany(x => x.Winnings).WithOne(x => x.Winner).OnDelete(DeleteBehavior.NoAction);
+        }
+        public static void BidConstraints(this ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Bid>(e =>
+            {
+                e.HasKey(x => x.Id);
+                e.Property(x => x.Id).IsRequired().ValueGeneratedOnAdd();
+                e.Property(x => x.BidAmount).IsRequired();
+                e.Property(x => x.AuctionId).IsRequired();
+            });
         }
     }
 }

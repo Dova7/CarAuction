@@ -1,4 +1,5 @@
 ﻿using CarAuctionDomain.Entities;
+using CarAuctionDomain.Entities.Bidding;
 using CarAuctionEntities.Entities;
 using CarAuctionEntities.Entities.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -21,6 +22,7 @@ namespace CarAuctionInfrastructure.Data
             modelBuilder.ApplicationUserConstraints();
             modelBuilder.AuctionItemImageConstraints();
             modelBuilder.AuctionItemAdditionalPropertiesConstraints();
+            modelBuilder.BidConstraints();
 
             modelBuilder.SeedRoles();
             modelBuilder.SeedUsers();
@@ -33,5 +35,6 @@ namespace CarAuctionInfrastructure.Data
         public DbSet<AuctionItem> AuctionItems { get; set; }
         public DbSet<AuctionItemImage> AuctionItemImages { get; set; }
         public DbSet<AuctionItemAdditionalProperties> AuctionItemAdditionalProperties { get; set; }
+        public DbSet<Bid> Bids { get; set; }
     }
 }
