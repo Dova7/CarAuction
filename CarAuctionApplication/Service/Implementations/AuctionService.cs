@@ -17,19 +17,19 @@ namespace CarAuctionApplication.Service.Implementations
             _AuctionRepository = auctionRepository;
             _mapper = mappingProfile.InitilizeAuction();
         }
-        public async Task<List<AuctionForGettingDtoAllLive>> GetAllLiveAuctionsAsync()
+        public async Task<List<AuctionForGettingDtoAll>> GetAllAuctionsAsync()
         {
             var raw = await _AuctionRepository.GetAllAsync(includePropeties: "AuctionItem");
             if (raw.Count == 0)
             {
                 throw new Exception("Auctions not Found");
             }
-            var filteredRaw = raw.Where(t => t.Status == CarAuctionEntities.Constants.Enums.Status.Live).ToList();
+            /*var filteredRaw = raw.Where(t => t.Status == CarAuctionEntities.Constants.Enums.Status.Live).ToList();
             if (filteredRaw.Count == 0)
             {
                 throw new Exception("No Live Auctions found");
-            }
-            var Auctions = _mapper.Map<List<AuctionForGettingDtoAllLive>>(filteredRaw);
+            }*/
+            var Auctions = _mapper.Map<List<AuctionForGettingDtoAll>>(raw);
             return Auctions;
         }
 
@@ -111,7 +111,6 @@ namespace CarAuctionApplication.Service.Implementations
             await _AuctionRepository.Update(auctionFromDb);
             await _AuctionRepository.Save();
         }
-
 
     }
 }

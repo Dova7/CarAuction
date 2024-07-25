@@ -23,9 +23,9 @@ namespace CarAuction.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<List<AuctionForGettingDtoAllLive>>> GetAllLiveAuctions()
+        public async Task<ActionResult<List<AuctionForGettingDtoAll>>> GetAllAuctions()
         {
-            var result = await _auctionService.GetAllLiveAuctionsAsync();
+            var result = await _auctionService.GetAllAuctionsAsync();
 
             return result;
         }

@@ -18,7 +18,7 @@ namespace CarAuctionApplication.Service.Mapper
         {
             MapperConfiguration configuration = new(c =>
             {
-                c.CreateMap<Auction, AuctionForGettingDtoAllLive>()               
+                c.CreateMap<Auction, AuctionForGettingDtoAll>()               
                 .ForMember(d => d.Make, o => o.MapFrom(s => s.AuctionItem.Make))
                 .ForMember(d => d.Model, o => o.MapFrom(s => s.AuctionItem.Model))
                 .ForMember(d => d.Year, o => o.MapFrom(s => s.AuctionItem.Year))

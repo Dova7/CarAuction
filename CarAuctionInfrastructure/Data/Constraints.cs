@@ -20,7 +20,7 @@ namespace CarAuctionInfrastructure.Data
             modelBuilder.Entity<Auction>()
                 .HasOne(x => x.AuctionItem)
                 .WithOne(x => x.Auction)
-                .HasForeignKey<AuctionItem>(x=> x.AuctionId)
+                .HasForeignKey<AuctionItem>(x => x.AuctionId)
                 .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Auction>()
@@ -99,8 +99,8 @@ namespace CarAuctionInfrastructure.Data
             modelBuilder.Entity<AuctionItemAdditionalProperties>()
                 .HasOne(x => x.AuctionItem)
                 .WithOne(x => x.AdditionalProperties)
-                .HasForeignKey<AuctionItemAdditionalProperties>(x => x.AuctionItemId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .HasForeignKey<AuctionItemAdditionalProperties>(x => x.AuctionItemId);
+                //.OnDelete(DeleteBehavior.Cascade);
         }
         public static void ApplicationUserConstraints(this ModelBuilder modelBuilder)
         {

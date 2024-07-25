@@ -26,6 +26,6 @@ namespace CarAuctionEntities.Entities
 
         public virtual ICollection<AuctionItemImage>? Images { get; set; }
 
-        public AuctionItemAdditionalProperties? AdditionalProperties { get; set; }
+        public virtual AuctionItemAdditionalProperties AdditionalProperties { get; set; } = null!;
     }
 }
