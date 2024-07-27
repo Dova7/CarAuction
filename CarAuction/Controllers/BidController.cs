@@ -8,7 +8,7 @@ namespace CarAuction.Controllers
     public class BidController : ControllerBase
     {
         private readonly IBidService _bidService;
-        public BidController(BidService bidService)
+        public BidController(IBidService bidService)
         {
             _bidService = bidService;
         }

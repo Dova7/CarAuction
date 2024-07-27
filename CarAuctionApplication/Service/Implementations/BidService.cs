@@ -25,8 +25,9 @@ namespace CarAuctionApplication.Service.Implementations
             if (addBidDto is null || auctionId == Guid.Empty)
             {
                 throw new ArgumentNullException("Invalid argument passed");
-            }            
+            }                
             var bid = _mapper.Map<Bid>(addBidDto);
+            bid.AuctionId = auctionId;
             var auction = await _auctionRepository.GetAsync(x => x.Id == auctionId);
             if (auction is null)
             {
