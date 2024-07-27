@@ -22,5 +22,16 @@ namespace CarAuction.Controllers
 
             return Ok();
         }
+
+        [HttpDelete("{bidId:guid}")]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> DeleteBid([FromRoute] Guid bidId)
+        {
+            await _bidService.DeleteBid(bidId);
+
+            return Ok();
+        }
     }
 }

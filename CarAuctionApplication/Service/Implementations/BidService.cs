@@ -25,7 +25,7 @@ namespace CarAuctionApplication.Service.Implementations
             if (addBidDto is null || auctionId == Guid.Empty)
             {
                 throw new ArgumentNullException("Invalid argument passed");
-            }                
+            }
             var bid = _mapper.Map<Bid>(addBidDto);
             bid.AuctionId = auctionId;
             var auction = await _auctionRepository.GetAsync(x => x.Id == auctionId);
@@ -47,7 +47,7 @@ namespace CarAuctionApplication.Service.Implementations
             }
             else
             {
-                bid.Status = BidStatus.BidPlaced;  
+                bid.Status = BidStatus.BidPlaced;
                 auction.CurrentHighBid = bid.BidAmount;
             }
             await _auctionRepository.Update(auction);
@@ -67,6 +67,21 @@ namespace CarAuctionApplication.Service.Implementations
             if (bid is null)
             {
                 throw new Exception("Bid not found");
+            }
+            var auction = await _auctionRepository.GetAsync(x => x.Id == bid.AuctionId);
+            if (auction is null)
+            {
+                throw new ArgumentException("Auction Not Found");
+            }
+            if (auction.CurrentHighBid == bid.BidAmount)
+            {
+                var bids = await _bidRepository.GetAllAsync();
+                var highestBid = bids.Where(b => b.Id != bid.Id).OrderByDescending(b => b.BidAmount).FirstOrDefault();
+
+                auction.CurrentHighBid = highestBid?.BidAmount ?? 0;
+
+                await _auctionRepository.Update(auction);
+                await _auctionRepository.Save();
             }
             _bidRepository.Remove(bid);
             await _bidRepository.Save();
