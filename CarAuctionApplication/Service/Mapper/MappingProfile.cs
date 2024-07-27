@@ -3,11 +3,13 @@ using CarAuctionApplication.Models.Main.Dtos.Auction;
 using CarAuctionApplication.Models.Main.Dtos.AuctionItem;
 using CarAuctionApplication.Models.Main.Dtos.AuctionItemAdditionalProperties;
 using CarAuctionApplication.Models.Main.Dtos.AuctionItemImage;
+using CarAuctionApplication.Models.Main.Dtos.Bid;
 using CarAuctionApplication.Models.Main.Dtos.CarAuction;
 using CarAuctionApplication.Models.Main.Dtos.CarAuctionItem;
 using CarAuctionApplication.Models.Main.Dtos.CarAuctionItemAdditionalProperties;
 using CarAuctionApplication.Models.Main.Dtos.CarAuctionItemImage;
 using CarAuctionDomain.Entities;
+using CarAuctionDomain.Entities.Bidding;
 using CarAuctionEntities.Entities;
 
 namespace CarAuctionApplication.Service.Mapper
@@ -63,6 +65,16 @@ namespace CarAuctionApplication.Service.Mapper
                 .ReverseMap();
 
                 c.CreateMap<AuctionItemAdditionalProperties, AuctionItemPropertiesForUpdatingDto>()
+                .ReverseMap();
+            });
+            return configuration.CreateMapper();
+        }
+
+        public IMapper InitializeBid()
+        {
+            MapperConfiguration configuration = new(c =>
+            {
+                c.CreateMap<Bid, AddBidDto>()
                 .ReverseMap();
             });
             return configuration.CreateMapper();
