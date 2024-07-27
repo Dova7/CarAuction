@@ -18,7 +18,7 @@ namespace CarAuction.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> AddAmount([FromRoute] Guid auctionId, [FromBody] AddBidDto addBidDto)
         {
-            await _bidService.AddAmount(auctionId, addBidDto);
+            await _bidService.AddAmountAsync(auctionId, addBidDto);
 
             return Ok();
         }
@@ -29,7 +29,7 @@ namespace CarAuction.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> DeleteBid([FromRoute] Guid bidId)
         {
-            await _bidService.DeleteBid(bidId);
+            await _bidService.DeleteBidAsync(bidId);
 
             return Ok();
         }

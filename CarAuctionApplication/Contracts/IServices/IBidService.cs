@@ -4,7 +4,7 @@ namespace CarAuctionApplication.Contracts.IServices
 {
     public interface IBidService
     {
-        Task AddAmount(Guid auctionId,AddBidDto addBidDto);
-        Task DeleteBid(Guid bidId);
+        Task AddAmountAsync(Guid auctionId,AddBidDto addBidDto);
+        Task DeleteBidAsync(Guid bidId);
     }
 }

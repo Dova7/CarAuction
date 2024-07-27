@@ -20,7 +20,7 @@ namespace CarAuctionApplication.Service.Implementations
             _bidRepository = bidRepository;
             _mapper = mappingProfile.InitializeBid();
         }
-        public async Task AddAmount(Guid auctionId, AddBidDto addBidDto)
+        public async Task AddAmountAsync(Guid auctionId, AddBidDto addBidDto)
         {
             if (addBidDto is null || auctionId == Guid.Empty)
             {
@@ -57,7 +57,7 @@ namespace CarAuctionApplication.Service.Implementations
             await _bidRepository.Save();
         }
 
-        public async Task DeleteBid(Guid bidId)
+        public async Task DeleteBidAsync(Guid bidId)
         {
             if (bidId == Guid.Empty)
             {
