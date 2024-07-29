@@ -1,10 +1,8 @@
-﻿using Azure;
-using CarAuctionApplication.Contracts.IServices;
+﻿using CarAuctionApplication.Contracts.IServices;
 using CarAuctionApplication.Models.Main.Dtos.Auction;
 using CarAuctionApplication.Models.Main.Dtos.CarAuction;
-using Microsoft.AspNetCore.Authorization;
+using CarAuctionApplication.Models.QueryParameters;
 using Microsoft.AspNetCore.Mvc;
-using System.Net;
 
 namespace CarAuction.Controllers
 {
@@ -16,16 +14,16 @@ namespace CarAuction.Controllers
         //private APIResponse _response;
         public AuctionController(IAuctionService auctionService)
         {
-             _auctionService = auctionService;
+            _auctionService = auctionService;
         }
 
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<List<AuctionForGettingDtoAll>>> GetAllAuctions()
+        public async Task<ActionResult<List<AuctionForGettingDtoAll>>> GetAllAuctions([FromQuery] AuctionQueryParameters queryParameters)
         {
-            var result = await _auctionService.GetAllAuctionsAsync();
+            var result = await _auctionService.GetAllAuctionsAsync(queryParameters);
 
             return result;
         }
@@ -37,7 +35,7 @@ namespace CarAuction.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<AuctionForGettingDtoSingle>> GetSingleAuction([FromRoute] Guid auctionId)
         {
-            var result = await _auctionService.GetSingleAuctionAsync(auctionId);           
+            var result = await _auctionService.GetSingleAuctionAsync(auctionId);
 
             return result;
         }
@@ -58,7 +56,7 @@ namespace CarAuction.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> UpdateAuction([FromRoute] Guid auctionId, [FromBody] AuctionForUpdatingDtoSeller auctionForUpdatingDtoSeller)
         {
-            await _auctionService.UpdateAuctionAsyncSeller(auctionId, auctionForUpdatingDtoSeller);            
+            await _auctionService.UpdateAuctionAsyncSeller(auctionId, auctionForUpdatingDtoSeller);
 
             return Ok();
         }
@@ -69,7 +67,7 @@ namespace CarAuction.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> DeleteAuction([FromRoute] Guid auctionId)
         {
-            await _auctionService.DeleteAuctionAsync(auctionId);            
+            await _auctionService.DeleteAuctionAsync(auctionId);
 
             return Ok();
         }

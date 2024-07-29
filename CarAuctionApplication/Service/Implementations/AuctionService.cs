@@ -3,43 +3,53 @@ using CarAuctionApplication.Contracts.IRepositories;
 using CarAuctionApplication.Contracts.IServices;
 using CarAuctionApplication.Models.Main.Dtos.Auction;
 using CarAuctionApplication.Models.Main.Dtos.CarAuction;
+using CarAuctionApplication.Models.QueryParameters;
 using CarAuctionApplication.Service.Mapper;
 using CarAuctionEntities.Entities;
+using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace CarAuctionApplication.Service.Implementations
 {
     public class AuctionService : IAuctionService
     {
-        private readonly IAuctionRepository _AuctionRepository;
+        private readonly IAuctionRepository _auctionRepository;
         private readonly IMapper _mapper;
-        public AuctionService(MappingProfile mappingProfile,IAuctionRepository auctionRepository)
+        public AuctionService(MappingProfile mappingProfile, IAuctionRepository auctionRepository)
         {
-            _AuctionRepository = auctionRepository;
+            _auctionRepository = auctionRepository;
             _mapper = mappingProfile.InitilizeAuction();
         }
-        public async Task<List<AuctionForGettingDtoAll>> GetAllAuctionsAsync()
+        public async Task<List<AuctionForGettingDtoAll>> GetAllAuctionsAsync(AuctionQueryParameters queryParameters)
         {
-            var raw = await _AuctionRepository.GetAllAsync(includePropeties: "AuctionItem");
-            if (raw.Count == 0)
+            IQueryable<Auction> query = _auctionRepository.GetQuery("AuctionItem");
+
+            if (!string.IsNullOrEmpty(queryParameters.SearchParameters.FilterBy) && !string.IsNullOrEmpty(queryParameters.SearchParameters.FilterValue))
             {
-                throw new Exception("Auctions not Found");
+                query = ApplyFiltering(query, queryParameters.SearchParameters.FilterBy, queryParameters.SearchParameters.FilterValue);
             }
-            /*var filteredRaw = raw.Where(t => t.Status == CarAuctionEntities.Constants.Enums.Status.Live).ToList();
-            if (filteredRaw.Count == 0)
+
+            if (!string.IsNullOrEmpty(queryParameters.SortParameters.SortBy))
             {
-                throw new Exception("No Live Auctions found");
-            }*/
-            var Auctions = _mapper.Map<List<AuctionForGettingDtoAll>>(raw);
-            return Auctions;
+                query = ApplySorting(query, queryParameters.SortParameters.SortBy, queryParameters.SortParameters.Descending);
+            }
+
+            query = ApplyPaging(query, queryParameters.PageParameters.PageNumber, queryParameters.PageParameters.PageSize);
+
+            var auctions = await query.ToListAsync();
+            var result = _mapper.Map<List<AuctionForGettingDtoAll>>(auctions);
+
+            return result;
         }
+
 
         public async Task<AuctionForGettingDtoSingle> GetSingleAuctionAsync(Guid id)
         {
-            var raw = await _AuctionRepository.GetAsync(x => x.Id == id, includePropeties: "AuctionItem,AuctionItem.Images,AuctionItem.AdditionalProperties");
+            var raw = await _auctionRepository.GetAsync(x => x.Id == id, includePropeties: "AuctionItem,AuctionItem.Images,AuctionItem.AdditionalProperties");
             if (raw is null)
             {
                 throw new Exception("Auction not Found");
-            }            
+            }
             var Auction = _mapper.Map<AuctionForGettingDtoSingle>(raw);
             return Auction;
         }
@@ -56,8 +66,8 @@ namespace CarAuctionApplication.Service.Implementations
                 throw new UnauthorizedAccessException("Must be logged in to create topic");
             }*/
             result.SellerId = "1365FCBA-5EBF-45B9-B67C-11DC33B91B12";
-            await _AuctionRepository.AddAsync(result);
-            await _AuctionRepository.Save();
+            await _auctionRepository.AddAsync(result);
+            await _auctionRepository.Save();
         }
         public async Task DeleteAuctionAsync(Guid auctionId)
         {
@@ -65,7 +75,7 @@ namespace CarAuctionApplication.Service.Implementations
             {
                 throw new ArgumentException("Invalid argument passed");
             }
-            var raw = await _AuctionRepository.GetAsync(x => x.Id == auctionId, includePropeties: "AuctionItem,AuctionItem.Images,AuctionItem.AdditionalProperties");
+            var raw = await _auctionRepository.GetAsync(x => x.Id == auctionId, includePropeties: "AuctionItem,AuctionItem.Images,AuctionItem.AdditionalProperties");
             if (raw == null)
             {
                 throw new Exception("Auction not Found");
@@ -82,8 +92,8 @@ namespace CarAuctionApplication.Service.Implementations
             }*/
             else
             {
-                _AuctionRepository.Remove(raw);
-                await _AuctionRepository.Save();
+                _auctionRepository.Remove(raw);
+                await _auctionRepository.Save();
             }
         }
         public async Task UpdateAuctionAsyncSeller(Guid auctionId, AuctionForUpdatingDtoSeller auctionForUpdatingDtoSeller)
@@ -97,7 +107,7 @@ namespace CarAuctionApplication.Service.Implementations
             {
                 throw new UnauthorizedAccessException("Must be logged in to update Topic");
             }*/
-            var auctionFromDb = await _AuctionRepository.GetAsync(x => x.Id == auctionId, includePropeties: "AuctionItem,AuctionItem.Images,AuctionItem.AdditionalProperties");
+            var auctionFromDb = await _auctionRepository.GetAsync(x => x.Id == auctionId, includePropeties: "AuctionItem,AuctionItem.Images,AuctionItem.AdditionalProperties");
             if (auctionFromDb is null)
             {
                 throw new Exception("Auction not Found");
@@ -107,10 +117,98 @@ namespace CarAuctionApplication.Service.Implementations
                 throw new UnauthorizedAccessException("Can't update another users topic");
             }*/
             _mapper.Map(auctionForUpdatingDtoSeller, auctionFromDb);
-            
-            await _AuctionRepository.Update(auctionFromDb);
-            await _AuctionRepository.Save();
+
+            await _auctionRepository.Update(auctionFromDb);
+            await _auctionRepository.Save();
+        }
+        private IQueryable<T> ApplySorting<T>(IQueryable<T> query, string sortBy, bool descending) where T : class
+        {
+            if (string.IsNullOrEmpty(sortBy))
+            {
+                return query;
+            }
+
+            var param = Expression.Parameter(typeof(T), "x");
+            var property = Expression.Property(param, sortBy);
+            var lambda = Expression.Lambda(property, param);
+
+            string methodName = descending ? "OrderByDescending" : "OrderBy";
+
+            MethodCallExpression resultExp = Expression.Call(typeof(Queryable), methodName, new Type[] { typeof(T), property.Type }, query.Expression, Expression.Quote(lambda));
+            return query.Provider.CreateQuery<T>(resultExp);
         }
 
+        private IQueryable<T> ApplyPaging<T>(IQueryable<T> query, int pageNumber, int pageSize) where T : class
+        {
+            if (pageNumber < 1 || pageSize < 1)
+            {
+                throw new ArgumentException("Page number and page size must be greater than 0.");
+            }
+
+            int skip = (pageNumber - 1) * pageSize;
+            return query.Skip(skip).Take(pageSize);
+        }
+        private IQueryable<T> ApplyFiltering<T>(IQueryable<T> query, string filterBy, string filterValue) where T : class
+        {
+            if (string.IsNullOrEmpty(filterBy) || string.IsNullOrEmpty(filterValue))
+            {
+                return query;
+            }
+            var propertyInfo = typeof(T).GetProperty(filterBy);
+            if (propertyInfo == null)
+            {
+                throw new ArgumentException($"Property '{filterBy}' does not exist on type '{typeof(T).Name}'");
+            }
+
+            var param = Expression.Parameter(typeof(T), "a");
+            var property = Expression.Property(param, propertyInfo);
+
+            // Convert filterValue to the appropriate type
+            var convertedValue = ConvertToType(filterValue, propertyInfo.PropertyType);
+            var constant = Expression.Constant(convertedValue);
+
+            // Create the equality expression
+            var equals = Expression.Equal(property, constant);
+            var filterExpression = Expression.Lambda<Func<T, bool>>(equals, param);
+
+            return query.Where(filterExpression);
+        }
+
+        private object ConvertToType(string value, Type targetType)
+        {
+            if (targetType == typeof(int))
+            {
+                return int.Parse(value);
+            }
+            if (targetType == typeof(decimal))
+            {
+                return decimal.Parse(value);
+            }
+            if (targetType == typeof(DateTime))
+            {
+                return DateTime.Parse(value);
+            }
+            if (targetType == typeof(bool))
+            {
+                return bool.Parse(value);
+            }
+            if (targetType == typeof(double))
+            {
+                return double.Parse(value);
+            }
+            if (targetType == typeof(uint))
+            {
+                return uint.Parse(value);
+            }
+            if (targetType == typeof(string))
+            {
+                return value;
+            }
+            if (targetType.IsEnum)
+            {
+                return Enum.ToObject(targetType, int.Parse(value));
+            }
+            throw new InvalidOperationException($"Cannot convert to type {targetType.Name}");
+        }
     }
 }

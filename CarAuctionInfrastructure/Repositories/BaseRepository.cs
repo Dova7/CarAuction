@@ -20,13 +20,13 @@ namespace CarAuctionInfrastructure.Repositories
             await _dbSet.AddAsync(entity);
         }
 
-        public async Task<List<T>> GetAllAsync(Expression<Func<T, bool>> filter, string? includePropeties = null)
+        public async Task<List<T>> GetAllAsync(Expression<Func<T, bool>> filter, string? includeProperties = null)
         {
             IQueryable<T> query = _dbSet;
 
-            if (!string.IsNullOrWhiteSpace(includePropeties))
+            if (!string.IsNullOrWhiteSpace(includeProperties))
             {
-                foreach (var includeProperty in includePropeties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+                foreach (var includeProperty in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
                 {
                     query = query.Include(includeProperty);
                 }
@@ -76,6 +76,11 @@ namespace CarAuctionInfrastructure.Repositories
         public void Remove(T entity)
         {
             _dbSet.Remove(entity);
+        }
+
+        protected IQueryable<T> Query()
+        {
+            return _dbSet.AsQueryable();
         }
     }
 }

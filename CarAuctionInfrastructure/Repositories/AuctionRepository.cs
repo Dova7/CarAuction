@@ -44,5 +44,10 @@ namespace CarAuctionInfrastructure.Repositories
             _context.Auctions.Update(entityFromDb);
             return entityFromDb;
         }
+        public IQueryable<Auction> GetQuery(params string[] includes)
+        {
+            return base.Query();
+        }
+
     }
 }
