@@ -129,9 +129,16 @@ namespace CarAuctionApplication.Service.Implementations
             }
 
             var param = Expression.Parameter(typeof(T), "x");
-            var property = Expression.Property(param, sortBy);
-            var lambda = Expression.Lambda(property, param);
+            var properties = sortBy.Split('.');
+            Expression property = param;
 
+            // Traverse the nested properties
+            foreach (var prop in properties)
+            {
+                property = Expression.Property(property, prop);
+            }
+
+            var lambda = Expression.Lambda(property, param);
             string methodName = descending ? "OrderByDescending" : "OrderBy";
 
             MethodCallExpression resultExp = Expression.Call(typeof(Queryable), methodName, new Type[] { typeof(T), property.Type }, query.Expression, Expression.Quote(lambda));
@@ -154,17 +161,22 @@ namespace CarAuctionApplication.Service.Implementations
             {
                 return query;
             }
-            var propertyInfo = typeof(T).GetProperty(filterBy);
-            if (propertyInfo == null)
+
+            var properties = filterBy.Split('.');
+            var param = Expression.Parameter(typeof(T), "a");
+            Expression property = param;
+
+            // Traverse the nested properties
+            foreach (var prop in properties)
             {
-                throw new ArgumentException($"Property '{filterBy}' does not exist on type '{typeof(T).Name}'");
+                property = Expression.Property(property, prop);
             }
 
-            var param = Expression.Parameter(typeof(T), "a");
-            var property = Expression.Property(param, propertyInfo);
-                
+            // Get the type of the final property
+            var finalPropertyType = property.Type;
+
             // Convert filterValue to the appropriate type
-            var convertedValue = ConvertToType(filterValue, propertyInfo.PropertyType);
+            var convertedValue = ConvertToType(filterValue, finalPropertyType);
             var constant = Expression.Constant(convertedValue);
 
             // Create the equality expression
