@@ -46,8 +46,15 @@ namespace CarAuctionInfrastructure.Repositories
         }
         public IQueryable<Auction> GetQuery(params string[] includes)
         {
-            return base.Query();
-        }
+            IQueryable<Auction> query = base.Query();
 
+            foreach (var include in includes)
+            {
+                query = query.Include(include);
+            }
+
+            return query;
+
+        }
     }
 }

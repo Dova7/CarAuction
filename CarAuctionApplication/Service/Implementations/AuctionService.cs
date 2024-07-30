@@ -162,7 +162,7 @@ namespace CarAuctionApplication.Service.Implementations
 
             var param = Expression.Parameter(typeof(T), "a");
             var property = Expression.Property(param, propertyInfo);
-
+                
             // Convert filterValue to the appropriate type
             var convertedValue = ConvertToType(filterValue, propertyInfo.PropertyType);
             var constant = Expression.Constant(convertedValue);
