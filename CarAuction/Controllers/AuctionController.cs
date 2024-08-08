@@ -2,7 +2,9 @@
 using CarAuctionApplication.Models.Main.Dtos.Auction;
 using CarAuctionApplication.Models.Main.Dtos.CarAuction;
 using CarAuctionApplication.Models.QueryParameters;
+using Microsoft.AspNet.OData;
 using Microsoft.AspNetCore.Mvc;
+using System.Net;
 
 namespace CarAuction.Controllers
 {
@@ -17,11 +19,11 @@ namespace CarAuction.Controllers
             _auctionService = auctionService;
         }
 
-        [HttpGet]
+        [HttpPost("Get")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<List<AuctionForGettingDtoAll>>> GetAllAuctions([FromQuery] AuctionQueryParameters queryParameters)
+        public async Task<ActionResult<List<AuctionForGettingDtoAll>>> GetAllAuctions([FromBody] AuctionQueryParameters queryParameters)
         {
             var result = await _auctionService.GetAllAuctionsAsync(queryParameters);
 
@@ -37,7 +39,12 @@ namespace CarAuction.Controllers
         {
             var result = await _auctionService.GetSingleAuctionAsync(auctionId);
 
-            return result;
+            if (result == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(result);
         }
 
         [HttpPost]
@@ -71,6 +78,5 @@ namespace CarAuction.Controllers
 
             return Ok();
         }
-
     }
 }

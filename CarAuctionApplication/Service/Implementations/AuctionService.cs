@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using CarAuctionApplication.Contracts.IRepositories;
 using CarAuctionApplication.Contracts.IServices;
 using CarAuctionApplication.Models.Main.Dtos.Auction;
@@ -7,7 +8,10 @@ using CarAuctionApplication.Models.QueryParameters;
 using CarAuctionApplication.Service.Mapper;
 using CarAuctionEntities.Entities;
 using Microsoft.EntityFrameworkCore;
+using System.ComponentModel;
 using System.Linq.Expressions;
+using static System.Net.Mime.MediaTypeNames;
+
 
 namespace CarAuctionApplication.Service.Implementations
 {
@@ -24,10 +28,11 @@ namespace CarAuctionApplication.Service.Implementations
         {
             IQueryable<Auction> query = _auctionRepository.GetQuery("AuctionItem");
 
-            if (!string.IsNullOrEmpty(queryParameters.SearchParameters.FilterBy) && !string.IsNullOrEmpty(queryParameters.SearchParameters.FilterValue))
+            if (queryParameters.SearchParameters != null && queryParameters.SearchParameters.Count > 0)
             {
-                query = ApplyFiltering(query, queryParameters.SearchParameters.FilterBy, queryParameters.SearchParameters.FilterValue);
+                query = ApplyFiltering(query, queryParameters.SearchParameters);
             }
+
 
             if (!string.IsNullOrEmpty(queryParameters.SortParameters.SortBy))
             {
@@ -69,6 +74,13 @@ namespace CarAuctionApplication.Service.Implementations
             await _auctionRepository.AddAsync(result);
             await _auctionRepository.Save();
         }
+        /*public IQueryable<AuctionForGettingDtoAll> GetAllAuctionsQueryable()
+        {
+            var query = _auctionRepository.GetQuery();
+
+            return query.ProjectTo<AuctionForGettingDtoAll>(_mapper.ConfigurationProvider);
+
+        }*/
         public async Task DeleteAuctionAsync(Guid auctionId)
         {
             if (auctionId == Guid.Empty)
@@ -144,7 +156,6 @@ namespace CarAuctionApplication.Service.Implementations
             MethodCallExpression resultExp = Expression.Call(typeof(Queryable), methodName, new Type[] { typeof(T), property.Type }, query.Expression, Expression.Quote(lambda));
             return query.Provider.CreateQuery<T>(resultExp);
         }
-
         private IQueryable<T> ApplyPaging<T>(IQueryable<T> query, int pageNumber, int pageSize) where T : class
         {
             if (pageNumber < 1 || pageSize < 1)
@@ -155,72 +166,87 @@ namespace CarAuctionApplication.Service.Implementations
             int skip = (pageNumber - 1) * pageSize;
             return query.Skip(skip).Take(pageSize);
         }
-        private IQueryable<T> ApplyFiltering<T>(IQueryable<T> query, string filterBy, string filterValue) where T : class
+        private IQueryable<T> ApplyFiltering<T>(IQueryable<T> query, List<SearchParameters> filters) where T : class
         {
-            if (string.IsNullOrEmpty(filterBy) || string.IsNullOrEmpty(filterValue))
+            if (filters == null || filters.Count == 0)
             {
                 return query;
             }
 
-            var properties = filterBy.Split('.');
-            var param = Expression.Parameter(typeof(T), "a");
-            Expression property = param;
-
-            // Traverse the nested properties
-            foreach (var prop in properties)
+            foreach (var filter in filters)
             {
-                property = Expression.Property(property, prop);
+                if (string.IsNullOrEmpty(filter.FilterBy) || string.IsNullOrEmpty(filter.FilterValue))
+                {
+                    continue;
+                }
+
+                var param = Expression.Parameter(typeof(T), "x");
+                Expression property = param;
+
+                // Navigate through nested properties
+                foreach (var propName in filter.FilterBy.Split('.'))
+                {
+                    property = Expression.Property(property, propName);
+                }
+
+                // Determine the comparison operator and value
+                var filterValue = filter.FilterValue.Trim();
+                object value;
+                Expression? comparison = null;
+
+                if (filterValue.StartsWith(">="))
+                {
+                    value = ConvertToType(filterValue.Substring(2).Trim(), property.Type);
+                    comparison = Expression.GreaterThanOrEqual(property, Expression.Constant(value));
+                }
+                else if (filterValue.StartsWith("<="))
+                {
+                    value = ConvertToType(filterValue.Substring(2).Trim(), property.Type);
+                    comparison = Expression.LessThanOrEqual(property, Expression.Constant(value));
+                }
+                else if (filterValue.StartsWith(">"))
+                {
+                    value = ConvertToType(filterValue.Substring(1).Trim(), property.Type);
+                    comparison = Expression.GreaterThan(property, Expression.Constant(value));
+                }
+                else if (filterValue.StartsWith("<"))
+                {
+                    value = ConvertToType(filterValue.Substring(1).Trim(), property.Type);
+                    comparison = Expression.LessThan(property, Expression.Constant(value));
+                }
+                else
+                {
+                    value = ConvertToType(filterValue, property.Type);
+                    comparison = Expression.Equal(property, Expression.Constant(value));
+                }
+
+                var lambda = Expression.Lambda<Func<T, bool>>(comparison, param);
+                query = query.Where(lambda);
             }
 
-            // Get the type of the final property
-            var finalPropertyType = property.Type;
-
-            // Convert filterValue to the appropriate type
-            var convertedValue = ConvertToType(filterValue, finalPropertyType);
-            var constant = Expression.Constant(convertedValue);
-
-            // Create the equality expression
-            var equals = Expression.Equal(property, constant);
-            var filterExpression = Expression.Lambda<Func<T, bool>>(equals, param);
-
-            return query.Where(filterExpression);
+            return query;
         }
 
-        private object ConvertToType(string value, Type targetType)
+
+        private object ConvertToType(string value, Type type)
         {
-            if (targetType == typeof(int))
+            var converter = TypeDescriptor.GetConverter(type);
+
+            // Check for valid format and handle accordingly
+            if (type == typeof(DateTime))
             {
-                return int.Parse(value);
+                if (DateTime.TryParse(value, out var dateValue))
+                {
+                    return dateValue;
+                }
+                throw new FormatException($"Cannot convert '{value}' to type '{type.Name}'.");
             }
-            if (targetType == typeof(decimal))
+            var result = converter.ConvertFromString(value);
+            if (result == null)
             {
-                return decimal.Parse(value);
+                throw new ArgumentNullException();
             }
-            if (targetType == typeof(DateTime))
-            {
-                return DateTime.Parse(value);
-            }
-            if (targetType == typeof(bool))
-            {
-                return bool.Parse(value);
-            }
-            if (targetType == typeof(double))
-            {
-                return double.Parse(value);
-            }
-            if (targetType == typeof(uint))
-            {
-                return uint.Parse(value);
-            }
-            if (targetType == typeof(string))
-            {
-                return value;
-            }
-            if (targetType.IsEnum)
-            {
-                return Enum.ToObject(targetType, int.Parse(value));
-            }
-            throw new InvalidOperationException($"Cannot convert to type {targetType.Name}");
+            return result;
         }
     }
 }

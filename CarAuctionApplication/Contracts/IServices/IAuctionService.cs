@@ -7,6 +7,7 @@ namespace CarAuctionApplication.Contracts.IServices
     public interface IAuctionService
     {
         Task<List<AuctionForGettingDtoAll>> GetAllAuctionsAsync(AuctionQueryParameters queryParameters);
+        //IQueryable<AuctionForGettingDtoAll> GetAllAuctionsQueryable();
         Task<AuctionForGettingDtoSingle> GetSingleAuctionAsync(Guid id);
         Task CreateAuctionAsync(AuctionForCreatingDto auctionForCreatingDto);
         Task UpdateAuctionAsyncSeller(Guid auctionId, AuctionForUpdatingDtoSeller auctionForUpdatingDtoSeller);

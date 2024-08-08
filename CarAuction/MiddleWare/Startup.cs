@@ -14,7 +14,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace CarAuction.MiddleWare
 {
@@ -99,7 +98,7 @@ namespace CarAuction.MiddleWare
         {
             options.ReturnHttpNotAcceptable = true;
             options.Filters.Add(new ProducesAttribute("application/json", "text/plain"));
-        });
+        });       
         public static void AddEndpointsApiExplorer(this WebApplicationBuilder builder) => builder.Services.AddEndpointsApiExplorer();
         public static void AddCors(this WebApplicationBuilder builder)
         {
@@ -118,11 +117,15 @@ namespace CarAuction.MiddleWare
         {
             builder.Services.AddScoped<CarAuctionApplication.Service.Mapper.MappingProfile>();
             builder.Services.AddScoped<IJwtGenerator, JwtTokenGenerator>();
-            builder.Services.AddScoped<IAuctionRepository, AuctionRepository>();           
+            builder.Services.AddScoped<IAuctionRepository, AuctionRepository>();
             builder.Services.AddScoped<IAuctionService, AuctionService>();
 
             builder.Services.AddScoped<IBidRepository, BidRepository>();
             builder.Services.AddScoped<IBidService, BidService>();
         }
+        /*public static void AddBackgroundService(this WebApplicationBuilder builder)
+        {
+            builder.Services.AddHostedService<AuctionStatusUpdateService>();
+        }*/
     }
 }

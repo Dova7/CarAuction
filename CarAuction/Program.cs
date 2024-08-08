@@ -19,11 +19,13 @@ namespace CarAuction
             builder.AddSwagger();
             builder.AddCors();
             builder.AddScopedServices();
+            //builder.AddBackgroundService();
 
             var app = builder.Build();
 
             if (app.Environment.IsDevelopment())
             {
+                app.UseDeveloperExceptionPage();
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
