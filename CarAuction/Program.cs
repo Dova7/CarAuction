@@ -19,7 +19,7 @@ namespace CarAuction
             builder.AddSwagger();
             builder.AddCors();
             builder.AddScopedServices();
-            //builder.AddBackgroundService();
+            builder.AddBackgroundService();
 
             var app = builder.Build();
 

@@ -5,6 +5,7 @@ using CarAuctionApplication.Models.Identity;
 using CarAuctionApplication.Service.Implementations;
 using CarAuctionEntities.Entities.Identity;
 using CarAuctionInfrastructure;
+using CarAuctionInfrastructure.BackgroundServices;
 using CarAuctionInfrastructure.Data;
 using CarAuctionInfrastructure.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -123,9 +124,9 @@ namespace CarAuction.MiddleWare
             builder.Services.AddScoped<IBidRepository, BidRepository>();
             builder.Services.AddScoped<IBidService, BidService>();
         }
-        /*public static void AddBackgroundService(this WebApplicationBuilder builder)
+        public static void AddBackgroundService(this WebApplicationBuilder builder)
         {
             builder.Services.AddHostedService<AuctionStatusUpdateService>();
-        }*/
+        }
     }
 }
